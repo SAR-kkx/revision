@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char dest1[20] = "Hello, ";
+    char dest2[20] = "Hello, ";
+    char src[] = "World!";
+
+    // 使用 strcat
+    strcat(dest1, src);
+    printf("Using strcat: %s\n", dest1); // 输出: "Hello, World!"
+
+    // 使用 strncat，限定最多拼接 3 个字符
+    strncat(dest2, src, 3);
+    printf("Using strncat: %s\n", dest2); // 输出: "Hello, Wor"
+
+    return 0;
+}
+
+//////////////////////////////
+
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_STR_LEN 1024
+
+void print_usage_error() {
+    printf("Numbers before are 10 20 30\n");
+    printf("Error: Invalid usage. Usage: ./join_words word1 word2.\n");
+}
+
+void join_words(char *dest, const char *word1, const char *word2) {
+    int len1 = strlen(word1);
+    int len2 = strlen(word2);
+
+    // Copy word1 to dest
+    for (int i = 0; i < len1; i++) {
+        dest[i] = word1[i];
+    }
+
+    // Copy word2 to the end of word1 in dest
+    for (int i = 0; i < len2; i++) {
+        dest[len1 + i] = word2[i];
+    }
+
+    // Add null terminator at the end
+    dest[len1 + len2] = '\0';
+}
+
+int main(int argc, char *argv[]) {
+    char joined_word[MAX_STR_LEN];
+
+    if (argc != 3) {
+        print_usage_error();
+    } else {
+        join_words(joined_word, argv[1], argv[2]);
+        printf("%s\n", joined_word);
+    }
+
+    return 0;
+}
