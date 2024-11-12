@@ -27,7 +27,7 @@ struct Player initialize_card(int number, int suit) {
 }
 
 // Function to make a guess and update points (no pointers)
-int guess_card(struct Player *guesser, struct Player opponent, int number_guess, int suit_guess) {
+struct Player guess_card(struct Player guesser, struct Player opponent, int number_guess, int suit_guess) {
     int points = 0;
     if (number_guess == opponent.card.number) {
         points += 1;
@@ -35,8 +35,8 @@ int guess_card(struct Player *guesser, struct Player opponent, int number_guess,
     if (suit_guess == opponent.card.suit) {
         points += 1;
     }
-    guesser->score += points;
-    return points == 2; // Returns true if both number and suit are correct
+    guesser.score += points;
+    return guesser; // Return the updated guesser struct
 }
 
 // Function to print the final results
@@ -74,7 +74,8 @@ int main() {
         // Player 1 guesses
         printf("Player 1, please guess player 2's card: ");
         scanf("%d %d", &guess_num, &guess_suit);
-        if (guess_card(&player1, player2, guess_num, guess_suit)) {
+        player1 = guess_card(player1, player2, guess_num, guess_suit);
+        if (player1.card.number == guess_num && player1.card.suit == guess_suit) {
             printf("Game over! Player 1 wins!\n");
             return 0;
         }
@@ -82,7 +83,8 @@ int main() {
         // Player 2 guesses
         printf("Player 2, please guess player 1's card: ");
         scanf("%d %d", &guess_num, &guess_suit);
-        if (guess_card(&player2, player1, guess_num, guess_suit)) {
+        player2 = guess_card(player2, player1, guess_num, guess_suit);
+        if (player2.card.number == guess_num && player2.card.suit == guess_suit) {
             printf("Game over! Player 2 wins!\n");
             return 0;
         }
@@ -94,4 +96,6 @@ int main() {
     // Print final results if no winner
     print_results(player1, player2);
     return 0;
+}
+
 }
