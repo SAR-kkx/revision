@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// 假设 struct node 已经定义好
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *delete_second_last(struct node *head) {
+    if (head == NULL || head->next == NULL) {
+        // 链表为空或只有一个节点
+        return head;
+    }
+    
+    struct node *previous = head;
+    struct node *current = head->next;
+    
+    // 如果链表只有两个节点，删除头节点的下一个节点
+    if (current->next == NULL) {
+        free(current);
+        head->next = NULL;
+        return head;
+    }
+
+    // 寻找倒数第二个节点
+    while (current->next->next != NULL) {
+        previous = current;
+        current = current->next;
+    }
+
+    // 删除倒数第二个节点
+    struct node *temp = current;
+    previous->next = current->next;
+    free(temp);
+
+    return head;
+}
