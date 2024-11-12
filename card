@@ -1,0 +1,97 @@
+#include <stdio.h>
+
+enum Suit {
+    HEARTS = 1,
+    DIAMONDS,
+    CLUBS,
+    SPADES
+};
+
+struct Card {
+    int number;
+    enum Suit suit;
+};
+
+struct Player {
+    struct Card card;
+    int score;
+};
+
+// Function to initialize a card for a player (no pointers)
+struct Player initialize_card(int number, int suit) {
+    struct Player player;
+    player.card.number = number;
+    player.card.suit = (enum Suit)suit;
+    player.score = 0;
+    return player;
+}
+
+// Function to make a guess and update points (no pointers)
+int guess_card(struct Player *guesser, struct Player opponent, int number_guess, int suit_guess) {
+    int points = 0;
+    if (number_guess == opponent.card.number) {
+        points += 1;
+    }
+    if (suit_guess == opponent.card.suit) {
+        points += 1;
+    }
+    guesser->score += points;
+    return points == 2; // Returns true if both number and suit are correct
+}
+
+// Function to print the final results
+void print_results(struct Player player1, struct Player player2) {
+    printf("Final Scores:\n");
+    printf("Player 1: %d\n", player1.score);
+    printf("Player 2: %d\n", player2.score);
+
+    if (player1.score > player2.score) {
+        printf("Player 1 wins!\n");
+    } else if (player2.score > player1.score) {
+        printf("Player 2 wins!\n");
+    } else {
+        printf("It's a draw!\n");
+    }
+}
+
+int main() {
+    struct Player player1, player2;
+    int number, suit, round, guess_num, guess_suit;
+
+    // Initialize players' cards
+    printf("Player 1, please enter your card number & suit: ");
+    scanf("%d %d", &number, &suit);
+    player1 = initialize_card(number, suit);
+
+    printf("Player 2, please enter your card number & suit: ");
+    scanf("%d %d", &number, &suit);
+    player2 = initialize_card(number, suit);
+
+    // Play up to 5 rounds
+    for (round = 1; round <= 5; round++) {
+        printf("\nRound %d!\n", round);
+
+        // Player 1 guesses
+        printf("Player 1, please guess player 2's card: ");
+        scanf("%d %d", &guess_num, &guess_suit);
+        if (guess_card(&player1, player2, guess_num, guess_suit)) {
+            printf("Game over! Player 1 wins!\n");
+            return 0;
+        }
+
+        // Player 2 guesses
+        printf("Player 2, please guess player 1's card: ");
+        scanf("%d %d", &guess_num, &guess_suit);
+        if (guess_card(&player2, player1, guess_num, guess_suit)) {
+            printf("Game over! Player 2 wins!\n");
+            return 0;
+        }
+
+        // Print scores after each round
+        printf("Player 1: %d, Player 2: %d\n", player1.score, player2.score);
+    }
+
+    // Print final results if no winner
+    print_results(player1, player2);
+    return 0;
+}
