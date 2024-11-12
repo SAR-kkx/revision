@@ -1,0 +1,41 @@
+#include <stdlib.h>
+
+// 假设 struct node 和 struct split_list 已经定义
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct split_list {
+    struct node *before_zero;
+    struct node *after_zero;
+};
+
+struct split_list *split(struct node *head) {
+    // 使用 malloc 为 split_list 分配内存，仅调用一次 malloc
+    struct split_list *result = malloc(sizeof(struct split_list));
+    result->before_zero = NULL;
+    result->after_zero = NULL;
+
+    if (head == NULL) {
+        return result;
+    }
+
+    struct node *current = head;
+    struct node *prev = NULL;
+
+    // 遍历链表，直到找到第一个 0
+    while (current != NULL && current->data != 0) {
+        prev = current;
+        current = current->next;
+    }
+
+    // 设置分割的两个子链表
+    if (prev != NULL) {
+        result->before_zero = head; // 从头节点到第一个 0 之前的节点作为 before_zero
+        prev->next = NULL;          // 断开链表，将 before_zero 链表的末尾指向 NULL
+    }
+    result->after_zero = current;   // 从第一个 0 开始到链表结尾作为 after_zero
+
+    return result;
+}
