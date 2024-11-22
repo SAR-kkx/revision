@@ -1,0 +1,29 @@
+struct node *delete_negatives(struct node *head）｛
+	struct node *current = head;
+	while (current |= NULL) {
+		if (head-›data < 0) {
+			struct node *tempo = head;
+			head = head-›next;
+			current = head;
+			free (tempo) ;
+		｝
+
+		if (current == NULL) ｛
+			return head;
+		｝
+
+
+		if (current-›next == NULL) {
+			return head;
+		}
+
+
+		if (current-›next-›data < 0) { 
+			struct node *tempo2 = current-›next; 
+			current-›next = current-›next-›next;
+			free (tempo2) ;
+		｝else｛
+			current = current-›next;
+		｝
+	｝
+｝
