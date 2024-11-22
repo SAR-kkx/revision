@@ -1,0 +1,17 @@
+void remove_duplicates(int length, int array[]) {
+    if (length == 0) return; // 空数组直接返回
+
+    int index = 0; // 用于存储去重后的数组索引
+    for (int i = 1; i < length; i++) {
+        if (array[index] != array[i]) {
+            index++;
+            array[index] = array[i];
+        }
+    }
+    // 此时 index 表示去重后数组的最后一个有效索引
+    printf("去重后的数组长度为: %d\n", index + 1);
+    for (int i = 0; i <= index; i++) {
+        printf("%d ", array[i]);
+    }
+    printf("\n");
+}
